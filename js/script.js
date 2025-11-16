@@ -6,11 +6,11 @@ let products = [];
 const sampleProducts = [
     {
         id: 1,
-        name: "Porsche 911 GT3 Wall Art",
-        price: 299,
-        image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        name: "Ferrari F40 Classic",
+        price: 79,
+        image: "images/Ferrarif40.jpg",
         category: "sports",
-        description: "Minimalist Porsche 911 GT3 silhouette with premium black frame",
+        description: "Iconic Ferrari F40 silhouette with vintage-inspired frame",
         customization: {
             sizes: ["30x40cm", "40x60cm", "50x70cm"],
             colors: ["Black", "White", "Silver", "Walnut"]
@@ -18,35 +18,35 @@ const sampleProducts = [
     },
     {
         id: 2,
-        name: "Lamborghini Aventador Decor",
-        price: 349,
-        image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        category: "sports",
-        description: "Elegant Lamborghini Aventador design with chrome accents",
+        name: "Nissan GTR VTC",
+        price: 69,
+        image: "images/NissanVTC.jpg",
+        category: "luxury",
+        description: "Sleek Nissan GTR design with modern lines and sporty frame",
         customization: {
             sizes: ["30x40cm", "40x60cm", "50x70cm"],
             colors: ["Black", "White", "Silver", "Gold"]
         }
     },
     {
-        id: 3,
-        name: "Mercedes AMG GT Art",
-        price: 279,
-        image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+       id: 3,
+        name: "Mercedes AMG GTs",
+        price: 69,
+        image: "images/Mercedes amg gt.jpg",
         category: "luxury",
-        description: "Sophisticated Mercedes AMG GT silhouette for modern interiors",
+        description: "Sophisticated Mercedes AMG GT design with luxury frame",
         customization: {
             sizes: ["30x40cm", "40x60cm", "50x70cm"],
-            colors: ["Black", "White", "Silver", "Rose Gold"]
+            colors: ["Black", "Silver", "Brushed Aluminum", "Titanium"]
         }
     },
     {
         id: 4,
-        name: "Ferrari F40 Classic",
-        price: 399,
-        image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        name: "Lamborghini Aventador SVJ",
+        price: 79,
+        image: "images/Lamborghini.jpg",
         category: "classic",
-        description: "Vintage Ferrari F40 design with distressed wood frame",
+        description: "Aggressive Lamborghini SVJ silhouette with angular frame",
         customization: {
             sizes: ["30x40cm", "40x60cm", "50x70cm"],
             colors: ["Black", "Brown", "Distressed Wood", "Vintage Gold"]
@@ -54,11 +54,11 @@ const sampleProducts = [
     },
     {
         id: 5,
-        name: "BMW M4 GTS Art",
-        price: 269,
-        image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        name: "Porsche 911 GT3",
+        price: 75,
+        image: "images/Porsche gt3.jpg",
         category: "sports",
-        description: "Modern BMW M4 GTS design with carbon fiber texture",
+        description: "Elegant Porsche 911 GT3 outline with precision design",
         customization: {
             sizes: ["30x40cm", "40x60cm", "50x70cm"],
             colors: ["Black", "Carbon", "Blue", "Red"]
@@ -66,14 +66,50 @@ const sampleProducts = [
     },
     {
         id: 6,
-        name: "Audi R8 V10 Plus",
-        price: 319,
-        image: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        category: "luxury",
-        description: "Sleek Audi R8 design with brushed aluminum frame",
+        name: "Mercedes 190E Evolution",
+        price: 65,
+        image: "images/Mercedes 190 evo.jpg",
+        category: "sports",
+        description: "Classic Mercedes 190E Evo DTM inspired design",
         customization: {
             sizes: ["30x40cm", "40x60cm", "50x70cm"],
-            colors: ["Black", "Silver", "Brushed Aluminum", "Titanium"]
+            colors: ["Black", "Carbon", "Blue", "Red"]
+        }
+    },
+    {
+        id: 7,
+        name: "Volkswagen Golf R",
+        price: 59,
+        image: "images/Volkswagen.jpg",
+        category: "sports",
+        description: "Clean Volkswagen Golf R silhouette with modern styling",
+        customization: {
+            sizes: ["30x40cm", "40x60cm", "50x70cm"],
+            colors: ["Black", "Carbon", "Blue", "Red"]
+        }
+    },
+    {
+        id: 8,
+        name: "Mercedes CLK63 Black Series",
+        price: 75,
+        image: "images/Mercedes clk63 black series.jpg",
+        category: "sports",
+        description: "Powerful Mercedes CLK63 Black Series with aggressive frame",
+        customization: {
+            sizes: ["30x40cm", "40x60cm", "50x70cm"],
+            colors: ["Black", "Carbon", "Blue", "Red"]
+        }
+    },
+    {
+        id: 9,
+        name: "Toyota Land Cruiser",
+        price: 59,
+        image: "images/ToyotaLandCruiser.jpg",
+        category: "luxury",
+        description: "Bold Toyota Land Cruiser outline with rugged frame",
+        customization: {
+            sizes: ["30x40cm", "40x60cm", "50x70cm"],
+            colors: ["Black", "White", "Silver", "Rose Gold"]
         }
     }
 ];
