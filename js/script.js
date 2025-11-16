@@ -884,12 +884,12 @@ function calculateCartTotal() {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 
-// Update initializeApp function to include checkout
+// Remove the checkAuthentication() call from initializeApp() in script.js
 function initializeApp() {
     products = sampleProducts;
     initializeNavigation();
     initializeCart();
-    initializeCheckout(); // Add this line
+    initializeCheckout();
     
     // Page-specific initializations
     if (document.querySelector('.hero')) {
@@ -906,18 +906,7 @@ function initializeApp() {
     
     updateCartCount();
     
-    // Check authentication
-    checkAuthentication();
-}
-
-function checkAuthentication() {
-    const user = localStorage.getItem('user');
-    const currentPage = window.location.pathname;
-    
-    // If not on auth page and no user data, redirect to auth
-    if (!currentPage.includes('auth.html') && !user && !currentPage.includes('auth.html')) {
-        window.location.href = 'auth.html';
-    }
+    // Remove this line: checkAuthentication();
 }
 
 // Make functions globally available
