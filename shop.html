@@ -14,7 +14,15 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="index.html">IronMotor</a>
+                <a href="index.html">
+                    <svg width="200" height="60" viewBox="0 0 200 60">
+                    <!-- Elegant script style -->
+                    <text x="100" y="40" text-anchor="middle" font-family="'Brush Script MT', cursive" 
+                        font-size="32" fill="#171717" style="font-style: italic;">IronMotor</text>
+                    <!-- Underline accent -->
+                    <path d="M60 45 L140 45" stroke="#dc2626" stroke-width="2"/>
+                    </svg>
+                </a>
             </div>
             <!-- Replace the nav-menu in all files with this: -->
             <ul class="nav-menu">
@@ -81,17 +89,7 @@
                 <!-- Products Grid -->
                 <main class="products-main">
                     <div class="products-header">
-                        <div class="products-count">
-                            <span id="products-count">12</span> products
-                        </div>
-                        <div class="sort-options">
-                            <select id="sort-select">
-                                <option value="featured">Featured</option>
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                                <option value="name">Name: A to Z</option>
-                            </select>
-                        </div>
+                        <h2>Available Products</h2>
                     </div>
                     <div class="products-grid" id="products-grid">
                         <!-- Products loaded by JavaScript -->
