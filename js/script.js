@@ -605,6 +605,321 @@ function formatPrice(price) {
     return `AED ${price.toFixed(2)}`;
 }
 
+// Checkout System
+function initializeCheckout() {
+    const checkoutBtn = document.querySelector('.btn-checkout');
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', function() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            openCheckoutModal();
+        });
+    }
+}
+
+function openCheckoutModal() {
+    const modal = document.createElement('div');
+    modal.className = 'checkout-modal';
+    modal.innerHTML = `
+        <div class="checkout-content">
+            <button class="checkout-close">&times;</button>
+            <h2>Complete Your Order</h2>
+            
+            <form id="checkoutForm" class="checkout-form">
+                <div class="form-section">
+                    <h3>Shipping Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Emirate *</label>
+                            <select name="emirate" required>
+                                <option value="">Select Emirate</option>
+                                <option value="dubai">Dubai</option>
+                                <option value="abu-dhabi">Abu Dhabi</option>
+                                <option value="sharjah">Sharjah</option>
+                                <option value="ajman">Ajman</option>
+                                <option value="ras-al-khaimah">Ras Al Khaimah</option>
+                                <option value="fujairah">Fujairah</option>
+                                <option value="umm-al-quwain">Umm Al Quwain</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Complete Address *</label>
+                        <textarea name="address" rows="3" required placeholder="Building name, street, area, etc."></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Payment Method</h3>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="card" required>
+                            <span>Credit/Debit Card</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="cod" required>
+                            <span>Cash on Delivery (COD)</span>
+                        </label>
+                    </div>
+                    
+                    <div class="card-details" id="cardDetails" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Card Number *</label>
+                                <input type="text" name="cardNumber" placeholder="1234 5678 9012 3456">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiry Date *</label>
+                                <input type="text" name="expiryDate" placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV *</label>
+                                <input type="text" name="cvv" placeholder="123">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cardholder Name *</label>
+                            <input type="text" name="cardholderName" placeholder="As on card">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-items">
+                        ${cart.map(item => `
+                            <div class="summary-item">
+                                <span>${item.name} x${item.quantity}</span>
+                                <span>AED ${(item.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="summary-total">
+                        <strong>Total: AED ${calculateCartTotal().toFixed(2)}</strong>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-place-order">
+                    Place Order
+                </button>
+            </form>
+        </div>
+        <div class="checkout-overlay"></div>
+    `;
+    
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+    
+    // Initialize checkout modal
+    initializeCheckoutModal();
+}
+
+function initializeCheckoutModal() {
+    const modal = document.querySelector('.checkout-modal');
+    const closeBtn = document.querySelector('.checkout-close');
+    const overlay = document.querySelector('.checkout-overlay');
+    const form = document.getElementById('checkoutForm');
+    const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
+    const cardDetails = document.getElementById('cardDetails');
+    
+    // Close modal
+    closeBtn.addEventListener('click', closeCheckoutModal);
+    overlay.addEventListener('click', closeCheckoutModal);
+    
+    // Show/hide card details based on payment method
+    paymentOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            if (this.value === 'card') {
+                cardDetails.style.display = 'block';
+            } else {
+                cardDetails.style.display = 'none';
+            }
+        });
+    });
+    
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        placeOrder();
+    });
+    
+    // Pre-fill user data if available
+    prefillUserData();
+}
+
+function prefillUserData() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.type === 'registered') {
+        const form = document.getElementById('checkoutForm');
+        if (user.name) form.querySelector('input[name="fullName"]').value = user.name;
+        if (user.email) form.querySelector('input[name="email"]').value = user.email;
+        if (user.phone) form.querySelector('input[name="phone"]').value = user.phone;
+    }
+}
+
+function placeOrder() {
+    const form = document.getElementById('checkoutForm');
+    const formData = new FormData(form);
+    const orderData = {
+        shipping: {
+            fullName: formData.get('fullName'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            emirate: formData.get('emirate'),
+            address: formData.get('address')
+        },
+        payment: {
+            method: formData.get('paymentMethod'),
+            cardNumber: formData.get('cardNumber'),
+            expiryDate: formData.get('expiryDate'),
+            cvv: formData.get('cvv'),
+            cardholderName: formData.get('cardholderName')
+        },
+        items: cart,
+        total: calculateCartTotal(),
+        orderNumber: generateOrderNumber(),
+        orderDate: new Date().toISOString()
+    };
+    
+    // Validate payment details if card is selected
+    if (orderData.payment.method === 'card') {
+        if (!orderData.payment.cardNumber || !orderData.payment.expiryDate || !orderData.payment.cvv || !orderData.payment.cardholderName) {
+            alert('Please fill in all card details');
+            return;
+        }
+    }
+    
+    // Save order to localStorage
+    saveOrder(orderData);
+    
+    // Show success message
+    showOrderConfirmation(orderData);
+    
+    // Clear cart
+    cart = [];
+    saveCart();
+    updateCartCount();
+    renderCartItems();
+    
+    // Close checkout modal
+    closeCheckoutModal();
+}
+
+function saveOrder(orderData) {
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.push(orderData);
+    localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+function showOrderConfirmation(orderData) {
+    const confirmation = document.createElement('div');
+    confirmation.className = 'order-confirmation';
+    confirmation.innerHTML = `
+        <div class="confirmation-content">
+            <div class="confirmation-icon">🎉</div>
+            <h2>Order Placed Successfully!</h2>
+            <div class="confirmation-details">
+                <p><strong>Order Number:</strong> ${orderData.orderNumber}</p>
+                <p><strong>Total Amount:</strong> AED ${orderData.total.toFixed(2)}</p>
+                <p><strong>Shipping to:</strong> ${orderData.shipping.address}, ${orderData.shipping.emirate}</p>
+                <p><strong>Payment Method:</strong> ${orderData.payment.method === 'card' ? 'Credit/Debit Card' : 'Cash on Delivery'}</p>
+            </div>
+            <div class="confirmation-message">
+                <p>Thank you for your order! You will receive a confirmation email shortly.</p>
+                <p>📦 <strong>Same-day delivery</strong> for orders before 2PM</p>
+            </div>
+            <button class="btn btn-primary btn-confirmation-close">Continue Shopping</button>
+        </div>
+        <div class="confirmation-overlay"></div>
+    `;
+    
+    document.body.appendChild(confirmation);
+    
+    // Close confirmation
+    const closeBtn = confirmation.querySelector('.btn-confirmation-close');
+    const overlay = confirmation.querySelector('.confirmation-overlay');
+    
+    closeBtn.addEventListener('click', function() {
+        confirmation.remove();
+        document.body.style.overflow = 'auto';
+    });
+    
+    overlay.addEventListener('click', function() {
+        confirmation.remove();
+        document.body.style.overflow = 'auto';
+    });
+}
+
+function closeCheckoutModal() {
+    const modal = document.querySelector('.checkout-modal');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function generateOrderNumber() {
+    return 'AA' + Date.now().toString().slice(-8);
+}
+
+function calculateCartTotal() {
+    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+}
+
+// Update initializeApp function to include checkout
+function initializeApp() {
+    products = sampleProducts;
+    initializeNavigation();
+    initializeCart();
+    initializeCheckout(); // Add this line
+    
+    // Page-specific initializations
+    if (document.querySelector('.hero')) {
+        initializeHomepage();
+    }
+    
+    if (document.querySelector('.shop-content')) {
+        initializeShopPage();
+    }
+    
+    if (document.querySelector('.about-header')) {
+        initializeAboutPage();
+    }
+    
+    updateCartCount();
+    
+    // Check authentication
+    checkAuthentication();
+}
+
+function checkAuthentication() {
+    const user = localStorage.getItem('user');
+    const currentPage = window.location.pathname;
+    
+    // If not on auth page and no user data, redirect to auth
+    if (!currentPage.includes('auth.html') && !user && !currentPage.includes('auth.html')) {
+        window.location.href = 'auth.html';
+    }
+}
+
 // Make functions globally available
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
@@ -613,3 +928,5 @@ window.openProductModal = openProductModal;
 window.closeProductModal = closeProductModal;
 window.addCustomizedToCart = addCustomizedToCart;
 window.toggleCart = toggleCart;
+
+
