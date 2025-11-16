@@ -132,6 +132,17 @@
                         <a href="https://www.instagram.com/ironmotor.ae?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link">📘 Facebook</a>
                         <a href="https://www.instagram.com/ironmotor.ae?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link">🎵 TikTok</a>
                     </div>
+                    <br>
+                    <div class="contact-item">
+                        <h4> We Also Accept</h4>
+                        
+                    </div>
+                    <div class="social-links" style="display:flex; gap:15px; align-items:center;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" width="60">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" width="60">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" width="30">
+                    </div>
+
                 </div>
                 <div class="contact-form">
                     <h3>Custom Order Inquiry</h3>
@@ -217,6 +228,11 @@
     <div class="cart-overlay"></div>
 
     <script src="js/script.js"></script>
+    <script>
+    // Check if user is authenticated
+    if (!localStorage.getItem('user')) {
+        window.location.href = 'auth.html';
+    }
+    </script>
 </body>
-
 </html>
