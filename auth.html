@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to AutoArt UAE</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #dc2626 0%, #171717 100%);
+            padding: 20px;
+        }
+        
+        .auth-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .auth-logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+        
+        .auth-subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-tab.active {
+            color: #dc2626;
+            border-bottom: 2px solid #dc2626;
+            margin-bottom: -2px;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+        
+        .guest-btn {
+            width: 100%;
+            padding: 15px;
+            background: #374151;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .guest-btn:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">AutoArt UAE</div>
+            <div class="auth-subtitle">Premium Car Wall Art & Decor</div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="showTab('login')">Login</button>
+                <button class="auth-tab" onclick="showTab('signup')">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label for="signupPhone">Phone Number</label>
+                    <input type="tel" id="signupPhone" required placeholder="+971 50 123 4567">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+            </form>
+            
+            <button class="guest-btn" onclick="continueAsGuest()">
+                Continue as Guest
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Update tabs
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.auth-tab:nth-child(${tabName === 'login' ? 1 : 2})`).classList.add('active');
+            
+            // Update forms
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Form').classList.add('active');
+        }
+        
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation
+            if (email && password) {
+                localStorage.setItem('user', JSON.stringify({
+                    email: email,
+                    name: email.split('@')[0],
+                    type: 'registered'
+                }));
+                window.location.href = 'index.html';
+            }
+        });
+        
+        // Handle signup form submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const phone = document.getElementById('signupPhone').value;
+            
+            if (name && email && password && phone) {
+                localStorage.setItem('user', JSON.stringify({
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    type: 'registered'
+                }));
+                window.location.href = 'index.html';
+            }
+        });
+        
+        function continueAsGuest() {
+            localStorage.setItem('user', JSON.stringify({
+                type: 'guest'
+            }));
+            window.location.href = 'index.html';
+        }
+        
+        // Check if user is already logged in
+        if (localStorage.getItem('user')) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
