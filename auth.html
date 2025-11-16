@@ -166,68 +166,92 @@
         </div>
     </div>
 
-    <script>
-        function showTab(tabName) {
-            // Update tabs
-            document.querySelectorAll('.auth-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelector(`.auth-tab:nth-child(${tabName === 'login' ? 1 : 2})`).classList.add('active');
-            
-            // Update forms
-            document.querySelectorAll('.auth-form').forEach(form => {
-                form.classList.remove('active');
-            });
-            document.getElementById(tabName + 'Form').classList.add('active');
-        }
-        
-        // Handle login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Simple validation
-            if (email && password) {
-                localStorage.setItem('user', JSON.stringify({
-                    email: email,
-                    name: email.split('@')[0],
-                    type: 'registered'
-                }));
-                window.location.href = 'index.html';
-            }
+    <!-- Replace the existing script in auth.html with this: -->
+<script>
+    function showTab(tabName) {
+        // Update tabs
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.classList.remove('active');
         });
+        document.querySelector(`.auth-tab:nth-child(${tabName === 'login' ? 1 : 2})`).classList.add('active');
         
-        // Handle signup form submission
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const phone = document.getElementById('signupPhone').value;
-            
-            if (name && email && password && phone) {
-                localStorage.setItem('user', JSON.stringify({
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    type: 'registered'
-                }));
-                window.location.href = 'index.html';
-            }
+        // Update forms
+        document.querySelectorAll('.auth-form').forEach(form => {
+            form.classList.remove('active');
         });
+        document.getElementById(tabName + 'Form').classList.add('active');
+    }
+    
+    // Handle login form submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
         
-        function continueAsGuest() {
+        // Simple validation
+        if (email && password) {
             localStorage.setItem('user', JSON.stringify({
-                type: 'guest'
+                email: email,
+                name: email.split('@')[0],
+                type: 'registered',
+                loggedIn: true,
+                loginTime: Date.now()
             }));
-            window.location.href = 'index.html';
+            // Redirect to the page they were trying to access, or index.html
+            const redirectTo = localStorage.getItem('redirectAfterLogin') || 'index.html';
+            localStorage.removeItem('redirectAfterLogin');
+            window.location.href = redirectTo;
         }
+    });
+    
+    // Handle signup form submission
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        const phone = document.getElementById('signupPhone').value;
         
-        // Check if user is already logged in
-        if (localStorage.getItem('user')) {
-            window.location.href = 'index.html';
+        if (name && email && password && phone) {
+            localStorage.setItem('user', JSON.stringify({
+                name: name,
+                email: email,
+                phone: phone,
+                type: 'registered',
+                loggedIn: true,
+                loginTime: Date.now()
+            }));
+            const redirectTo = localStorage.getItem('redirectAfterLogin') || 'index.html';
+            localStorage.removeItem('redirectAfterLogin');
+            window.location.href = redirectTo;
         }
-    </script>
+    });
+    
+    function continueAsGuest() {
+        localStorage.setItem('user', JSON.stringify({
+            type: 'guest',
+            loggedIn: true,
+            loginTime: Date.now()
+        }));
+        const redirectTo = localStorage.getItem('redirectAfterLogin') || 'index.html';
+        localStorage.removeItem('redirectAfterLogin');
+        window.location.href = redirectTo;
+    }
+    
+    // Check if user is already logged in (with proper session check)
+    const userData = localStorage.getItem('user');
+    if (userData) {
+        const user = JSON.parse(userData);
+        // Check if login is still valid (within 24 hours)
+        if (user.loggedIn && user.loginTime && (Date.now() - user.loginTime) < (24 * 60 * 60 * 1000)) {
+            const redirectTo = localStorage.getItem('redirectAfterLogin') || 'index.html';
+            localStorage.removeItem('redirectAfterLogin');
+            window.location.href = redirectTo;
+        } else {
+            // Session expired, clear user data
+            localStorage.removeItem('user');
+        }
+    }
+</script>
 </body>
 </html>
