@@ -6,6 +6,7 @@
     <title>About IronMotor | Custom Car Decor | UAE Local Business</title>
     <meta name="description" content="Learn about IronMotor - local car decor specialists. Custom designs, same-day shipping, and premium quality wall art for car enthusiasts.">
     <link rel="stylesheet" href="styles/style.css">
+    <script src="js/auth-check.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -15,13 +16,15 @@
             <div class="nav-logo">
                 <a href="index.html">IronMotor</a>
             </div>
+            <!-- Replace the nav-menu in all files with this: -->
             <ul class="nav-menu">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
                 <li class="nav-item"><a href="shop.html" class="nav-link">Shop</a></li>
-                <li class="nav-item"><a href="about.html" class="nav-link active">About</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="#" class="nav-link cart-toggle">
                     Cart <span class="cart-count">0</span>
                 </a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="logout()">Logout</a></li>
             </ul>
             <div class="hamburger">
                 <span class="bar"></span>
