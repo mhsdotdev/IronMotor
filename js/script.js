@@ -56,7 +56,7 @@ const sampleProducts = [
         id: 5,
         name: "Porsche 911 GT3",
         price: 75,
-        image: "images/Porsche gt3.jpg",
+        image: "images/Porsche_gt3.jpg",
         category: "sports",
         description: "Elegant Porsche 911 GT3 outline with precision design",
         customization: {
@@ -92,7 +92,7 @@ const sampleProducts = [
         id: 8,
         name: "Mercedes CLK63 Black Series",
         price: 75,
-        image: "images/Mercedes clk63 black series.jpg",
+        image: "images/Mercedes_clk63_black_series.jpg",
         category: "sports",
         description: "Powerful Mercedes CLK63 Black Series with aggressive frame",
         customization: {
@@ -953,5 +953,6 @@ window.openProductModal = openProductModal;
 window.closeProductModal = closeProductModal;
 window.addCustomizedToCart = addCustomizedToCart;
 window.toggleCart = toggleCart;
+
 
 
