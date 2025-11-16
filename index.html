@@ -113,6 +113,11 @@
 
     <!-- Scripts -->
     <script src="js/script.js"></script>
+    <script>
+    // Check if user is authenticated
+    if (!localStorage.getItem('user')) {
+        window.location.href = 'auth.html';
+    }
+    </script>
 </body>
-
 </html>
