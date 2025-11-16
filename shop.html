@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Car Wall Art UAE | Customizable Auto Decor | AutoArt UAE</title>
+    <meta name="description" content="Browse our collection of customizable car wall decor. Sports cars, luxury models, classic cars. UAE delivery with same-day shipping.">
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation (same as index.html) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">AutoArt UAE</a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="shop.html" class="nav-link active">Shop</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#" class="nav-link cart-toggle">
+                    Cart <span class="cart-count">0</span>
+                </a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Shop Header -->
+    <section class="shop-header">
+        <div class="container">
+            <h1>Car Wall Art Collection</h1>
+            <p>Customizable designs with same-day UAE shipping</p>
+        </div>
+    </section>
+
+    <!-- Shop Content -->
+    <section class="shop-content">
+        <div class="container">
+            <div class="shop-layout">
+                <!-- Filters Sidebar -->
+                <aside class="filters-sidebar">
+                    <div class="filter-group">
+                        <h4>Car Type</h4>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="car-type" value="sports" checked>
+                                <span>Sports Cars</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="car-type" value="luxury" checked>
+                                <span>Luxury Cars</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="car-type" value="classic" checked>
+                                <span>Classic Cars</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Price Range</h4>
+                        <div class="price-range">
+                            <input type="range" min="99" max="499" value="499" class="price-slider">
+                            <div class="price-values">
+                                <span>AED 99</span>
+                                <span>AED 499</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline filter-reset">Reset Filters</button>
+                </aside>
+
+                <!-- Products Grid -->
+                <main class="products-main">
+                    <div class="products-header">
+                        <div class="products-count">
+                            <span id="products-count">12</span> products
+                        </div>
+                        <div class="sort-options">
+                            <select id="sort-select">
+                                <option value="featured">Featured</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="name">Name: A to Z</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="products-grid" id="products-grid">
+                        <!-- Products loaded by JavaScript -->
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Modal -->
+    <div class="product-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <!-- Product details loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="cart-close">&times;</button>
+        </div>
+        <div class="cart-items">
+            <!-- Cart items loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-price">AED 0.00</span>
+            </div>
+            <button class="btn btn-primary btn-checkout">Proceed to Checkout</button>
+        </div>
+    </div>
+    
+    <div class="cart-overlay"></div>
+    <script src="js/script.js"></script>
+        <!-- Order Confirmation Popup -->
+    <div class="confirmation-popup">
+        <div class="popup-content">
+            <h3>Order Confirmed!</h3>
+            <p>Thank you for your order. Our team will get in touch with you shortly.</p>
+            <button class="popup-close">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Add this to your existing JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnCheckout = document.querySelector('.btn-checkout');
+            const confirmationPopup = document.querySelector('.confirmation-popup');
+            const popupClose = document.querySelector('.popup-close');
+            const cartOverlay = document.querySelector('.cart-overlay');
+            const cartItems = document.querySelector('.cart-items');
+            const totalPrice = document.querySelector('.total-price');
+            const cartCount = document.querySelector('.cart-count');
+            const cartSidebar = document.querySelector('.cart-sidebar');
+
+            // Checkout button click handler
+            if(btnCheckout) {
+                btnCheckout.addEventListener('click', function() {
+                    // Show the confirmation popup
+                    confirmationPopup.classList.add('active');
+                    cartOverlay.classList.add('active');
+                });
+            }
+
+            // Close popup when OK button is clicked
+            if(popupClose) {
+                popupClose.addEventListener('click', function() {
+                    closePopupAndEmptyCart();
+                });
+            }
+
+            // Close popup when overlay is clicked
+            if(cartOverlay) {
+                cartOverlay.addEventListener('click', function(event) {
+                    // Only handle if confirmation popup is active
+                    if(confirmationPopup.classList.contains('active')) {
+                        event.stopPropagation(); // Prevent other overlay handlers
+                        closePopupAndEmptyCart();
+                    }
+                });
+            }
+
+            function closePopupAndEmptyCart() {
+                // Close popup and overlay
+                confirmationPopup.classList.remove('active');
+                cartOverlay.classList.remove('active');
+                
+                // Close cart sidebar
+                cartSidebar.classList.remove('active');
+                
+                // Empty the cart
+                cartItems.innerHTML = '';
+                totalPrice.textContent = 'AED 0.00';
+                cartCount.textContent = '0';
+            }
+        });
+    </script>
+
+    <style>
+        /* Add these styles to your existing CSS */
+        .confirmation-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1001;
+            text-align: center;
+            padding: 25px;
+            display: none;
+        }
+
+        .confirmation-popup.active {
+            display: block;
+        }
+
+        .popup-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .popup-content p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+
+        .popup-close {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+    </style>
+</body>
+</html>
